@@ -1,27 +1,20 @@
-# Dockerfile
-
-# Use uma imagem base do Python com suporte ao Flask
+# Use a imagem base do Python
 FROM python:3.9-slim
 
+# Atualize o sistema e instale as dependências necessárias
 RUN apt-get update && apt-get install -y libssl-dev
 
-
-# Sete o diretório de trabalho para /app
+# Defina o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copie os arquivos necessários (app.py e outros)
-COPY app.py .
+# Copie o arquivo requirements.txt para o diretório de trabalho
 COPY requirements.txt .
 
-# Instale as dependências Python
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Instale as dependências especificadas no arquivo requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Defina a porta que o container deve expor
-EXPOSE 5000
+# Copie todo o conteúdo do diretório local para o diretório de trabalho do container
+COPY . .
 
-# Defina a variável de ambiente para o Flask (opcional, se necessário)
-ENV FLASK_APP=app.py
-
-# Comando para executar a aplicação quando o container for iniciado
+# Comando padrão para executar quando o container for iniciado
 CMD ["flask", "run", "--host=0.0.0.0"]
