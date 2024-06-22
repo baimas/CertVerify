@@ -10,35 +10,38 @@ body {
     width: 80%;
     margin: auto;
     overflow: hidden;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
 }
 
 header {
     background: #50b3a2;
     color: #fff;
-    padding-top: 30px;
-    min-height: 70px;
-    border-bottom: #50b3a2 3px solid;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 3px solid #3a8d7a;
 }
 
 header .logo {
-    float: left;
     width: 100px;
 }
 
 header h1 {
-    text-align: center;
     margin: 0;
     padding: 0;
+    font-size: 24px;
 }
 
 main {
     padding: 20px;
-    background: #fff;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
 table, th, td {
@@ -46,15 +49,24 @@ table, th, td {
 }
 
 th, td {
-    padding: 10px;
+    padding: 12px;
     text-align: left;
 }
 
 th {
     background: #50b3a2;
     color: #fff;
+    font-weight: bold;
 }
 
 tr:nth-child(even) {
     background: #f2f2f2;
 }
+
+tr.error {
+    background-color: #ffcdd2; /* Cor de fundo em vermelho */
+}
+
+/*tr:hover {
+    background-color: #e0f2f1; /* Cor ao passar o mouse */
+/*}

@@ -36,7 +36,9 @@ def get_certificate_info(url):
 def index():
     urls = [
         "www.google.com",
-        "www.github.com"
+        "www.github.com",
+        "www.facebook.com",
+        "www.instagram.com"
     ]
     results = [get_certificate_info(url) for url in urls]
     return render_template('index.html', results=results)
