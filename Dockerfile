@@ -10,9 +10,11 @@ RUN apt-get update && apt-get install -y libssl-dev
 WORKDIR /app
 
 # Copie os arquivos necessários (app.py e outros)
-COPY app.py requirements.txt.
+COPY app.py .
+COPY requirements.txt .
 
 # Instale as dependências Python
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Defina a porta que o container deve expor
