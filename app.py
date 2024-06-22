@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import OpenSSL
 import socket
 import datetime
@@ -32,7 +32,28 @@ def get_certificate_info(url):
         print(f"Erro ao obter certificado para {url}: {e}")
         return {'url': url, 'error': str(e)}
 
-@app.route('/')
+# Rota para a página de login
+@app.route('/', methods=['GET', 'POST'])
+@app.route("/login", methods=["GET",'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Aqui você pode adicionar a lógica de autenticação
+        # Exemplo básico: verificar se o usuário e senha correspondem
+        if username == 'admin' and password == 'password':
+            # Autenticação bem-sucedida, redireciona para a página principal (index)
+            return redirect(url_for('index'))
+        else:
+            # Autenticação falhou, redireciona de volta para a página de login
+            return render_template('login.html')
+    else:
+        # Se o método for GET, apenas renderiza a página de login
+        return render_template('login.html')
+
+# Rota para a página principal após o login
+@app.route('/index')
 def index():
     urls = [
         "www.google.com",
@@ -42,6 +63,7 @@ def index():
     ]
     results = [get_certificate_info(url) for url in urls]
     return render_template('index.html', results=results)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
