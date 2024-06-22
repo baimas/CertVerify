@@ -1,28 +1,31 @@
-# .github/workflows/deploy.yml
-
-name: CI/CD with Docker and Minikube
+name: Deploy to Minikube
 
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: macOS-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Build Docker image
-      run: docker build -t certverify .
+      - name: Set up Minikube
+        run: |
+          minikube start
+          minikube kubectl -- apply -f deployment.yaml
 
-    - name: Load Docker image into Minikube
-      run: |
-        minikube docker-env --shell bash | Invoke-Expression
-        docker tag certverify baimas/certverify:v1.0
-        docker push baimas/certverify:v1.0
+      - name: Build Docker image
+        run: docker build -t certverify .
 
-    - name: Deploy to Minikube
-      run: kubectl apply -f deployment.yaml
+      - name: Load Docker image into Minikube
+        run: |
+          eval $(minikube -p minikube docker-env)
+          docker tag certverify baimas/certverify:v1.0
+          docker push baimas/certverify:v1.0
+
+      - name: Deploy to Minikube
+        run: kubectl apply -f deployment.yaml
