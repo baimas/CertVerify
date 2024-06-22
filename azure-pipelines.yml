@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'self'
 
 variables:
   # Variável para nomear a imagem Docker
