@@ -1,0 +1,31 @@
+# .github/workflows/deploy.yml
+
+name: CI/CD with Docker and Minikube
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t certverify .
+
+    - name: Run Docker container (optional: for local testing)
+      run: docker run -p 5000:5000 certverify &
+
+    - name: Load Docker image into Minikube
+      run: |
+        minikube docker-env --shell bash | Invoke-Expression
+        docker tag certverify baimas/certverify:v1.0
+        docker push baimas/certverify:v1.0
+
+    - name: Deploy to Minikube
+      run: kubectl apply -f deployment.yaml
