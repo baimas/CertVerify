@@ -7,16 +7,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: macOS-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Set up Minikube
-        run: |
-          minikube start
-          minikube kubectl -- apply -f deployment.yaml
 
       - name: Build Docker image
         run: docker build -t certverify .
