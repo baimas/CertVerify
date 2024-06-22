@@ -16,6 +16,9 @@ jobs:
       - name: Build Docker image
         run: docker build -t certverify .
 
+      - name: Aguardando uns segundos
+        run: sleep 30s
+
       - name: Load Docker image into Minikube
         run: |
           eval $(minikube -p minikube docker-env)
