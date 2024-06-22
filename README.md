@@ -1,4 +1,6 @@
-Claro, aqui está um exemplo de `README.md` que inclui todas as informações necessárias para implantar sua aplicação no OpenShift usando um Service Account para autenticação.
+```
+WELLCOME !
+```
 
 ```markdown
 # CertVerify
@@ -201,9 +203,3 @@ Acesse a aplicação no navegador usando a rota configurada no OpenShift.
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
-
-```
-
-Salve este conteúdo como `README.md` no repositório do seu projeto. Certifique-se de ajustar quaisquer detalhes específicos, como o nome do registro da imagem do Docker (`<your-registry>/certverify:latest`). 
-
-Se precisar de mais alguma coisa, estou aqui para ajudar!
