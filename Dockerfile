@@ -10,7 +10,8 @@ WORKDIR /app
 COPY app.py .
 
 # Instale as dependências Python
-RUN pip install Flask
+
+RUN pip install Flask pyOpenSSL socket datetime
 
 # Defina a porta que o container deve expor
 EXPOSE 5000
