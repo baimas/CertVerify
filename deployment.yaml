@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: certverify
-        image: docker.io/baimas/certverify  # Nome da imagem no registro local
+        image: docker.io/baimas/certverify:v1.0 # Nome da imagem no registro local
         ports:
         - containerPort: 5000
 
