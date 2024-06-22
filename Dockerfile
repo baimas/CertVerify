@@ -12,6 +12,7 @@ COPY requirements.txt .
 
 # Instale as dependências especificadas no arquivo requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install pyOpenSSL
 
 # Copie todo o conteúdo do diretório local para o diretório de trabalho do container
 COPY . .
