@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     margin: auto;
     overflow: hidden;
     background: #fff;
@@ -17,21 +17,19 @@ body {
 }
 
 header {
-    background: #50b3a2;
+    background: #000000;
     color: #fff;
     padding: 15px 0;
-    text-align: center;
+    text-align: left;
     border-bottom: 3px solid #3a8d7a;
 }
 
-header .logo {
-    width: 100px;
-}
-
 header h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 24px;
+    margin: 3px;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 main {
