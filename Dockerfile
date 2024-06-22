@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Use uma imagem base do Python com suporte ao Flask
-FROM python:3.9-slim
+FROM python:latest
 
 # Sete o diretório de trabalho para /app
 WORKDIR /app

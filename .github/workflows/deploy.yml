@@ -24,3 +24,6 @@ jobs:
 
       - name: Deploy to Minikube
         run: kubectl apply -f deployment.yaml
+
+      - name: Rollout Restart no Deployment
+        run: kubectl rollout restart deployment/certverify
