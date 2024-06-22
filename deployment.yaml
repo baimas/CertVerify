@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: certverify
+  namespace: certverify
 spec:
   replicas: 1
   selector:
@@ -25,6 +26,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: certverify
+  namespace: certverify
 spec:
   selector:
     app: certverify
