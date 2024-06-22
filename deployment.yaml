@@ -1,0 +1,35 @@
+# deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: certverify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: certverify
+  template:
+    metadata:
+      labels:
+        app: certverify
+    spec:
+      containers:
+      - name: certverify
+        image: docker.io/baimas/certverify  # Nome da imagem no registro local
+        ports:
+        - containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: certverify
+spec:
+  selector:
+    app: certverify
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: NodePort
