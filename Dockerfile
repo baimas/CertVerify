@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Use uma imagem base do Python com suporte ao Flask
-FROM python:3.9-sli
+FROM python:3.9-slim
 
 RUN apt-get update && apt-get install -y libssl-dev
 
