@@ -16,9 +16,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t certverify .
 
-      - name: Aguardando uns segundos
-        run: sleep 30s
-
       - name: Docker tag e push
         run: |
           docker tag certverify baimas/certverify
