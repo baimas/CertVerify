@@ -1,40 +1,37 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CertVerify</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>CertVerify</h1>
-        </header>
+    <header>
+        <h1>CertVerify</h1>
+    </header>
+    <main>
         <table>
             <thead>
                 <tr>
                     <th>URL</th>
                     <th>CN</th>
                     <th>Data de Validade</th>
-                    <th>Dias para Vencimento</th>
+                    <th>Dias para Vencimento <button onclick="sortTable()">⬇️</button></th>
                 </tr>
             </thead>
             <tbody>
                 {% for result in results %}
-                {% if result.days_remaining < 30 %}
-                <tr class="error">
-                {% else %}
-                <tr>
-                {% endif %}
-                    <td>{{ result.url }}</td>
-                    <td>{{ result.cn if result.cn else 'Erro' }}</td>
-                    <td>{{ result.validity.strftime('%d/%m/%Y') if result.validity else 'Erro' }}</td>
-                    <td>{{ result.days_remaining if result.days_remaining else 'Erro' }}</td>
-                </tr>
+                    <tr {% if result.near_expiry %}class="near-expiry"{% endif %}>
+                        <td>{{ result.url }}</td>
+                        <td>{{ result.cn }}</td>
+                        <td>{{ result.validity }}</td>
+                        <td>{{ result.days_remaining }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+    </main>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
