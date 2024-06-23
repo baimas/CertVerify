@@ -19,9 +19,8 @@ jobs:
       - name: Aguardando uns segundos
         run: sleep 30s
 
-      - name: Load Docker image into Minikube
+      - name: Docker tag e push
         run: |
-          eval $(minikube -p minikube docker-env)
           docker tag certverify baimas/certverify
           docker push baimas/certverify
 
