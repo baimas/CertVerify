@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-import OpenSSL
+import ssl
 import socket
 import datetime
 
@@ -8,36 +8,31 @@ app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 def get_certificate_info(url):
     try:
-        context = OpenSSL.SSL.Context(OpenSSL.SSL.TLS_CLIENT_METHOD)  # Usa TLS moderno
-        context.set_default_verify_paths()
+        context = ssl.create_default_context()
 
-        sock = socket.create_connection((url, 443))
-        ssl_conn = OpenSSL.SSL.Connection(context, sock)
-        
-        # Define o SNI (obrigatório para muitos sites modernos)
-        ssl_conn.set_tlsext_host_name(url.encode('utf-8'))
-        ssl_conn.set_connect_state()
-        ssl_conn.do_handshake()
+        # Cria um socket e faz o handshake TLS com SNI
+        with socket.create_connection((url, 443), timeout=5) as sock:
+            with context.wrap_socket(sock, server_hostname=url) as ssock:
+                cert = ssock.getpeercert()
 
-        cert = ssl_conn.get_peer_certificate()  
-        
-        # Extração do CN (Common Name)
-        cn = None
-        for component in cert.get_subject().get_components():
-            if component[0] == b'CN':
-                cn = component[1].decode('utf-8')
-                break
-        
-        # Extração da data de validade e cálculo dos dias restantes
-        not_after = datetime.datetime.strptime(cert.get_notAfter().decode('utf-8'), '%Y%m%d%H%M%SZ')
+        # Extrai o CN (Common Name)
+        subject = dict(x[0] for x in cert['subject'])
+        cn = subject.get('commonName')
+
+        # Extrai validade
+        not_after = datetime.datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z')
         days_remaining = (not_after - datetime.datetime.utcnow()).days
-
-        # Determinar se está próximo do vencimento
         near_expiry = days_remaining < 30
 
-        return {'url': url, 'cn': cn, 'validity': not_after, 'days_remaining': days_remaining, 'near_expiry': near_expiry}
+        return {
+            'url': url,
+            'cn': cn,
+            'validity': not_after,
+            'days_remaining': days_remaining,
+            'near_expiry': near_expiry
+        }
+
     except Exception as e:
-        # Depuração: Exibir erros
         print(f"Erro ao obter certificado para {url}: {e}")
         return {'url': url, 'error': str(e)}
 
