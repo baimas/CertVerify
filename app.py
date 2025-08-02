@@ -34,7 +34,7 @@ def get_certificate_info(url):
 
     except Exception as e:
         print(f"Erro ao obter certificado para {url}: {e}")
-        return {'url': url, 'error': str(e)}
+        return {'url': url, 'error': str(e)} 
 
 # Rota para a página de login
 @app.route('/', methods=['GET', 'POST'])
@@ -76,3 +76,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

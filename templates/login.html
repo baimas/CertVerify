@@ -1,68 +1,101 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#50b3a2',
+            primaryHover: '#3a8d7a',
+          }
         }
-        .container {
-            width: 300px;
-            padding: 50px;
-            background: #ededed;
-            border-radius: 8px;
-            box-shadow: 6px --2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input[type="text"], input[type="password"] {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        input[type="submit"] {
-            background-color: #50b3a2;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        input[type="submit"]:hover {
-            background-color: #3a8d7a;
-        }
-    </style>
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>Login</h1>
-        <form action="/login" method="post">
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
-            <input type="submit" value="Entrar">
-        </form>
+<body class="h-full bg-white dark:bg-gray-900 text-[#333] dark:text-white">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img src="/static/img/logo_certverify.png" alt="Logo" class="mx-auto h-40 w-auto" />
+      <h2 class="mt-10 text-center text-2xl font-bold tracking-tight">
+        Acesse sua conta
+      </h2>
+    </div>  
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      {% if error %}
+        <div class="mb-6 rounded-md bg-red-100 text-red-800 p-3 text-center text-sm dark:bg-red-900 dark:text-red-300">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form action="/login" method="POST" class="space-y-6" onsubmit="showLoading(this)">
+        <div>
+          <label for="username" class="block text-sm font-medium">Usuário</label>
+          <div class="mt-2 relative">
+            <i class="ph ph-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              class="pl-10 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:ring-primary dark:bg-white/10 dark:border-gray-600 dark:placeholder:text-gray-400"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium">Senha</label>
+          <div class="mt-2 relative">
+            <i class="ph ph-lock-key absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              class="pl-10 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:ring-primary dark:bg-white/10 dark:border-gray-600 dark:placeholder:text-gray-400"
+            />
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primaryHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+            id="submit-button"
+          >
+            <span class="loading-text">Entrar</span>
+            <svg class="ml-2 h-4 w-4 animate-spin hidden" id="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <p class="mt-10 text-center text-sm text-gray-500 dark:text-gray-400">
+        Ainda não tem uma conta?
+        <a href="#" class="font-semibold text-primary hover:text-primaryHover">Crie uma agora</a>
+      </p>
     </div>
+  </div>
+
+  <script>
+    function showLoading(form) {
+      const btn = form.querySelector('#submit-button')
+      const text = btn.querySelector('.loading-text')
+      const spinner = btn.querySelector('#spinner')
+      btn.disabled = true
+      text.textContent = 'Entrando...'
+      spinner.classList.remove('hidden')
+    }
+  </script>
 </body>
 </html>
