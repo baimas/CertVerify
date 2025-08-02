@@ -8,13 +8,18 @@ app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 def get_certificate_info(url):
     try:
-        # Conectar ao servidor e obter o certificado
-        conn = socket.create_connection((url, 443))
-        context = OpenSSL.SSL.Context(OpenSSL.SSL.SSLv23_METHOD)
-        sock = OpenSSL.SSL.Connection(context, conn)
-        sock.set_connect_state()
-        sock.do_handshake()
-        cert = sock.get_peer_certificate()
+        context = OpenSSL.SSL.Context(OpenSSL.SSL.TLS_CLIENT_METHOD)  # Usa TLS moderno
+        context.set_default_verify_paths()
+
+        sock = socket.create_connection((url, 443))
+        ssl_conn = OpenSSL.SSL.Connection(context, sock)
+        
+        # Define o SNI (obrigatório para muitos sites modernos)
+        ssl_conn.set_tlsext_host_name(url.encode('utf-8'))
+        ssl_conn.set_connect_state()
+        ssl_conn.do_handshake()
+
+        cert = ssl_conn.get_peer_certificate()  
         
         # Extração do CN (Common Name)
         cn = None

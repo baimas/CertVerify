@@ -65,10 +65,9 @@ tr.error {
     background-color: #ffcdd2; /* Cor de fundo em vermelho */
 }
 
-/*tr:hover {
+tr:hover {
     background-color: #e0f2f1; /* Cor ao passar o mouse */
-
-
-.near-expiry {
-    background-color: #ffcccc; /* Cor de fundo vermelha */
 }
+
+/*.near-expiry {
+    background-color: #ffcccc; /* Cor de fundo vermelha */
